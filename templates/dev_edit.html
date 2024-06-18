@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Edit Entries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        b {
+            color: #dc3545; /* червоний колір */
+        }
+        .delete-form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .edit-form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .delete-btn, .edit-btn, .add-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .delete-btn:hover, .edit-btn:hover, .add-btn:hover {
+            background-color: #c82333; /* змінений відтінок червоного для наведення */
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head> 
+<body>
+    <div class="container">
+        <h1>Developer Edit Entries</h1>
+        <div class="actions">
+            <button class="add-btn" onclick="window.location.href='/dev_write'">Add New Entry</button>
+        </div>
+        {% if entries|length > 0 %}
+            <ul>
+            {% for entry in entries %}
+                <li>[{{ entry.id }}] <b>{{ entry.title }}</b> ({{ entry.date }})<br>
+                {{ entry.content }}
+                <form class="delete-form" action="/delete_entry" method="post">
+                    <input type="hidden" name="entry_id" value="{{ entry.id }}">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+                <form class="edit-form" action="/edit/{{ entry.id }}" method="get">
+                    <button type="submit" class="edit-btn">Edit</button>
+                </form>
+                <hr>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>This blog is empty.</p>
+        {% endif %}
+        <div class="back-link">
+            <a href="/browse">Back to Browse Entries</a>
+        </div>
+    </div>
+</body>
+</html>
